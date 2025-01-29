@@ -995,7 +995,6 @@ export const makeMessagesRecvSocket = (config: SocketConfig) => {
 		const hasLowercaseOrHyphen = /[a-z-]/.test(msgId);
 		if (hasLowercaseOrHyphen) {
 			logger.error(`Ignoring receipt with lowercase or hyphen ID: ${msgId}`);
-			ev.flush();
 			handleBadAck(node)
 				.catch(error => onUnexpectedError(error, 'handling bad ack'));
 			return;
