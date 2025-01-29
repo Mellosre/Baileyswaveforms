@@ -990,13 +990,15 @@ export const makeMessagesRecvSocket = (config: SocketConfig) => {
 	})
 
 	ws.on('CB:receipt', node => {
+		logger.debug( { node }, "CB:receipt - received node");
 		const msgId = node.attrs.id!;
 		const hasLowercaseOrHyphen = /[a-z-]/.test(msgId);
 		if (hasLowercaseOrHyphen) {
-			logger.debug(`Ignoring receipt with lowercase or hyphen ID: ${msgId}`);
+			logger.error(`Ignoring receipt with lowercase or hyphen ID: ${msgId}`);
 			ev.flush();
 			handleBadAck(node)
-				.catch(error => onUnexpectedError(error, 'handling bad ack'))
+				.catch(error => onUnexpectedError(error, 'handling bad ack'));
+			return;
 		}
 		processNodeWithBuffer(node, 'handling receipt', handleReceipt)
 	})
