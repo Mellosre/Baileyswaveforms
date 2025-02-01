@@ -1,4 +1,5 @@
 
+import logger from '../Utils/logger'
 import * as constants from './constants'
 import { FullJid, jidDecode } from './jid-utils'
 import type { BinaryNode, BinaryNodeCodingOptions } from './types'
@@ -190,6 +191,7 @@ const encodeBinaryNodeInner = (
 		} else if(isNibble(str)) {
 			writePackedBytes(str, 'nibble')
 		} else if(isHex(str)) {
+			logger.info(`writing hex string: ${str}`);
 			writePackedBytes(str, 'hex')
 		} else if(str) {
 			const decodedJid = jidDecode(str)
